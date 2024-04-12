@@ -10,7 +10,8 @@ from typing import List
 
 
 patterns = {
-    'extract': lambda numx, numy: r'(?P<field>{})=[^{}]*'.format('|'.join(numx), numy),
+    'extract': lambda numx,
+    numy: r'(?P<field>{})=[^{}]*'.format('|'.join(numx), numy),
     'replace': lambda numx: r'\g<field>={}'.format(numx),
 }
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -94,7 +95,8 @@ class RedactingFormatter(logging.Formatter):
         '''formating the LogRecord.
         '''
         message = super(RedactingFormatter, self).format(record)
-        text = filter_datum(self.fields, self.REDACTION, message, self.SEPARATOR)
+        text = filter_datum(self.fields,
+                            self.REDACTION, message, self.SEPARATOR)
         return text
 
 
