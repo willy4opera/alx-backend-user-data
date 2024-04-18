@@ -12,14 +12,14 @@ from models.user import User
 class SessionAuth(Auth):
     '''The session authentication class.
     '''
-    UserID_by_SessionID = {}
+    user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:
         '''Here, we created a session id for the user.
         '''
         if type(user_id) is str:
             SessionID = str(uuid4())
-            self.UserID_by_SessionID[SessionID] = user_id
+            self.user_id_by_session_id[SessionID] = user_id
             return SessionID
 
     def user_id_for_session_id(self, SessionID: str = None) -> str:
@@ -27,7 +27,7 @@ class SessionAuth(Auth):
         a given session id.
         '''
         if type(SessionID) is str:
-            return self.UserID_by_SessionID.get(SessionID)
+            return self.user_id_by_session_id.get(SessionID)
 
     def current_user(self, request=None) -> User:
         '''Here, we retrieved the user associated with the request.
@@ -42,6 +42,6 @@ class SessionAuth(Auth):
         user_id = self.user_id_for_session_id(SessionID)
         if (request is None or SessionID is None) or user_id is None:
             return False
-        if SessionID in self.UserID_by_SessionID:
-            del self.UserID_by_SessionID[SessionID]
+        if SessionID in self.user_id_by_session_id:
+            del self.user_id_by_session_id[SessionID]
         return True
