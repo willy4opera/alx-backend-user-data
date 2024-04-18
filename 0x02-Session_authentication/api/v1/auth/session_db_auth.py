@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Session authentication with expiration
+
+'''The Session authentication with expiration
 and storage support module for the API.
-"""
+'''
 from flask import request
 from datetime import datetime, timedelta
 
@@ -10,12 +11,12 @@ from .session_exp_auth import SessionExpAuth
 
 
 class SessionDBAuth(SessionExpAuth):
-    """Session authentication class with expiration and storage support.
-    """
+    '''The session authentication class with expiration and storage support.
+    '''
 
     def create_session(self, user_id=None) -> str:
-        """Creates and stores a session id for the user.
-        """
+        '''Here, we Created and stores a session id for the user.
+        '''
         session_id = super().create_session(user_id)
         if type(session_id) == str:
             kwargs = {
@@ -27,25 +28,25 @@ class SessionDBAuth(SessionExpAuth):
             return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """Retrieves the user id of the user associated with
+        '''Here, we retrieved the user id of the user associated with
         a given session id.
-        """
+        '''
         try:
             sessions = UserSession.search({'session_id': session_id})
         except Exception:
             return None
         if len(sessions) <= 0:
             return None
-        cur_time = datetime.now()
+        time_now = datetime.now()
         time_span = timedelta(seconds=self.session_duration)
-        exp_time = sessions[0].created_at + time_span
-        if exp_time < cur_time:
+        time_expired = sessions[0].created_at + time_span
+        if time_expired < time_now:
             return None
         return sessions[0].user_id
 
     def destroy_session(self, request=None) -> bool:
-        """Destroys an authenticated session.
-        """
+        '''Destroys an authenticated session.
+        '''
         session_id = self.session_cookie(request)
         try:
             sessions = UserSession.search({'session_id': session_id})
