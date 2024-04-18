@@ -22,10 +22,10 @@ class SessionExpAuth(SessionAuth):
         except Exception:
             self.session_duration = 0
 
-    def create_session(self, user_id=None):
+    def start_session(self, user_id=None):
         '''Here, we created the session id for the user.
         '''
-        session_id = super().create_session(user_id)
+        session_id = super().start_session(user_id)
         if type(session_id) != str:
             return None
         self.user_id_by_session_id[session_id] = {
@@ -34,7 +34,7 @@ class SessionExpAuth(SessionAuth):
         }
         return session_id
 
-    def user_id_for_session_id(self, session_id=None) -> str:
+    def UserID_for_SessionID(self, session_id=None) -> str:
         '''Retrieves the user id of the user associated with
         a given session id.
         '''
