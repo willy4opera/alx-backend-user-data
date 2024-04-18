@@ -18,16 +18,16 @@ class SessionAuth(Auth):
         '''Here, we created a session id for the user.
         '''
         if type(user_id) is str:
-            SessionID = str(uuid4())
-            self.user_id_by_session_id[SessionID] = user_id
-            return SessionID
+            session_id = str(uuid4())
+            self.user_id_by_session_id[session_id] = user_id
+            return session_id
 
-    def user_id_for_session_id(self, SessionID: str = None) -> str:
+    def user_id_for_session_id(self, session_id: str = None) -> str:
         '''Here, we retrieved the user id of the user associated with
         a given session id.
         '''
-        if type(SessionID) is str:
-            return self.user_id_by_session_id.get(SessionID)
+        if type(session_id) is str:
+            return self.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None) -> User:
         '''Here, we retrieved the user associated with the request.
@@ -38,10 +38,10 @@ class SessionAuth(Auth):
     def destroy_session(self, request=None):
         '''Here, we destroyed the authenticated session.
         '''
-        SessionID = self.session_cookie(request)
-        user_id = self.user_id_for_session_id(SessionID)
-        if (request is None or SessionID is None) or user_id is None:
+        session_id = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_id)
+        if (request is None or session_id is None) or user_id is None:
             return False
-        if SessionID in self.user_id_by_session_id:
-            del self.user_id_by_session_id[SessionID]
+        if session_id in self.user_id_by_session_id:
+            del self.user_id_by_session_id[session_id]
         return True
