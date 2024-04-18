@@ -14,10 +14,10 @@ class SessionDBAuth(SessionExpAuth):
     '''The session authentication class with expiration and storage support.
     '''
 
-    def start_session(self, user_id=None) -> str:
+    def create_session(self, user_id=None) -> str:
         '''Here, we Created and stores a session id for the user.
         '''
-        session_id = super().start_session(user_id)
+        session_id = super().create_session(user_id)
         if type(session_id) == str:
             kwargs = {
                 'user_id': user_id,
@@ -27,7 +27,7 @@ class SessionDBAuth(SessionExpAuth):
             user_session.save()
             return session_id
 
-    def UserID_for_SessionID(self, session_id=None):
+    def user_id_for_session_id(self, session_id=None):
         '''Here, we retrieved the user id of the user associated with
         a given session id.
         '''

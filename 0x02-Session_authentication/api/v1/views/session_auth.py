@@ -31,7 +31,7 @@ def login() -> Tuple[str, int]:
         return jsonify(result_nt_found), 404
     if users[0].is_valid_password(password):
         from api.v1.app import auth
-        sessiond_id = auth.start_session(getattr(users[0], 'id'))
+        sessiond_id = auth.create_session(getattr(users[0], 'id'))
         res = jsonify(users[0].to_json())
         res.set_cookie(os.getenv("SESSION_NAME"), sessiond_id)
         return res
