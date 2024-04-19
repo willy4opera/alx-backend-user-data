@@ -16,7 +16,7 @@ def login() -> Tuple[str, int]:
     Return:
       - JSON representation of a User object.
     '''
-    result_nt_found = {"error": "no user found for this email"}
+    not_found_res = {"error": "no user found for this email"}
     email = request.form.get('email')
     if email is None or len(email.strip()) == 0:
         return jsonify({"error": "email missing"}), 400
@@ -26,9 +26,9 @@ def login() -> Tuple[str, int]:
     try:
         users = User.search({'email': email})
     except Exception:
-        return jsonify(result_nt_found), 404
+        return jsonify(not_found_res), 404
     if len(users) <= 0:
-        return jsonify(result_nt_found), 404
+        return jsonify(not_found_res), 404
     if users[0].is_valid_password(password):
         from api.v1.app import auth
         sessiond_id = auth.create_session(getattr(users[0], 'id'))
