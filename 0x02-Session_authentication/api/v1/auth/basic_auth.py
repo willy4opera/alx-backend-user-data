@@ -64,13 +64,13 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(
             self,
-            user_email: str,
+            email: str,
             user_pwd: str) -> TypeVar('User'):
         """Retrieves a user based on the user's authentication credentials.
         """
-        if type(user_email) == str and type(user_pwd) == str:
+        if type(email) == str and type(user_pwd) == str:
             try:
-                users = User.search({'email': user_email})
+                users = User.search({'email': email})
             except Exception:
                 return None
             if len(users) <= 0:
