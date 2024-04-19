@@ -17,14 +17,14 @@ def login() -> Tuple[str, int]:
       - JSON representation of a User object.
     '''
     result_nt_found = {"error": "no user found for this email"}
-    user_email = request.form.get('email')
-    if user_email is None or len(user_email.strip()) == 0:
+    email = request.form.get('email')
+    if email is None or len(email.strip()) == 0:
         return jsonify({"error": "email missing"}), 400
     password = request.form.get('password')
     if password is None or len(password.strip()) == 0:
         return jsonify({"error": "password missing"}), 400
     try:
-        users = User.search({'email': user_email})
+        users = User.search({'email': email})
     except Exception:
         return jsonify(result_nt_found), 404
     if len(users) <= 0:
