@@ -44,20 +44,21 @@ class DB:
             self._session.rollback()
             new_user = None
         return new_user
-    
+
+
 def find_user_by(self, **kwargs) -> User:
-        '''The method finds users based on a set of filters.
-        '''
-        u_fields, u_values = [], []
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                u_fields.append(getattr(User, key))
-                u_values.append(value)
-            else:
-                raise InvalidRequestError()
-        result = self._session.query(User).filter(
-            tuple_(*u_fields).in_([tuple(u_values)])
-        ).first()
-        if result is None:
-            raise NoResultFound()
-        return result
+    '''The method finds users based on a set of filters.
+    '''
+    u_fields, u_values = [], []
+    for key, value in kwargs.items():
+        if hasattr(User, key):
+            u_fields.append(getattr(User, key))
+            u_values.append(value)
+        else:
+            raise InvalidRequestError()
+    result = self._session.query(User).filter(
+        tuple_(*u_fields).in_([tuple(u_values)])
+    ).first()
+    if result is None:
+        raise NoResultFound()
+    return result
