@@ -17,6 +17,7 @@ def _hash_password(password: str) -> bytes:
     '''
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
+
 class Auth:
     '''Here, we define the
     auth class to interact with the authentication database.
@@ -35,4 +36,3 @@ class Auth:
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
         raise ValueError("User {} already exists".format(email))
-    
