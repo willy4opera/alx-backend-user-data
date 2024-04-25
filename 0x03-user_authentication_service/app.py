@@ -41,12 +41,12 @@ def login() -> str:
     Return:
         - The account login payload.
     '''
-    email, password = request.form.get(
+    U_email, U_password = request.form.get(
         "email"), request.form.get("password")
-    if not AUTH.valid_login(email, password):
+    if not AUTH.valid_login(U_email, U_password):
         abort(401)
-    session_id = AUTH.create_session(email)
-    response = jsonify({"email": email, "message": "logged in"})
+    session_id = AUTH.create_session(U_email)
+    response = jsonify({"email": U_email, "message": "logged in"})
     response.set_cookie("session_id", session_id)
     return response
 
