@@ -105,20 +105,19 @@ class Auth:
         self._db.update_user(user.id, reset_token=reset_token)
         return reset_token
 
-    def update_user(self, user_id: int, **kwargs) -> None:
-        '''Update users based on a given user id.
+    def update_password(self, reset_token: str, password: str) -> None:
+        '''Here, we enable user's update password with their given reset token.
         '''
-        user = self.find_user_by(id=user_id)
+        user = None
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+        except NoResultFound:
+            user = None
         if user is None:
-            return
-        source_update = {}
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                source_update[getattr(User, key)] = value
-            else:
-                raise ValueError()
-        self._session.query(User).filter(User.id == user_id).update(
-            source_update,
-            synchronize_session=False,
+            raise ValueError()
+        new_pswd_hash = _hash_password(password)
+        self._db.update_user(
+            user.id,
+            hashed_password=new_pswd_hash,
+            reset_token=None,
         )
-        self._session.commit()
