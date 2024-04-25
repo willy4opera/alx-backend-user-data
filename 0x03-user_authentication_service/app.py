@@ -103,7 +103,7 @@ def update_password() -> str:
         - User password update payload.
     '''
     email = request.form.get("email")
-    token_reset = request.form.get("token_reset")
+    token_reset = request.form.get("reset_token")
     new_pswd = request.form.get("new_password")
     is_password_changed = False
     try:
