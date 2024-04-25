@@ -50,17 +50,19 @@ def login() -> str:
     response.set_cookie("session_id", session_id)
     return response
 
-    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
-        """Retrieves a user based on a given session ID.
-        """
-        user = None
-        if session_id is None:
-            return None
-        try:
-            user = self._db.find_user_by(session_id=session_id)
-        except NoResultFound:
-            return None
-        return user
+
+@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
+def logout() -> str:
+    '''DELETE user /sessions
+    Return:
+        - Redirects user to home route.
+    '''
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
+        abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect("/")
 
 
 if __name__ == "__main__":
