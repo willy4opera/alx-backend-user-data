@@ -17,10 +17,12 @@ def _hash_password(password: str) -> bytes:
     '''
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
+
 def _generate_uuid() -> str:
-        '''Here, we Generated a UUID.
-        '''
-        return str(uuid4())
+    '''Here, we Generated a UUID.
+    '''
+    return str(uuid4())
+
 
 class Auth:
     '''Here, we define the
@@ -54,7 +56,7 @@ class Auth:
                 )
         except NoResultFound:
             return False
-        return False 
+        return False
 
     def create_session(self, email: str) -> str:
         '''Allow the creation of sessions for new users.
