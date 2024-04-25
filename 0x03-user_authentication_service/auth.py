@@ -104,3 +104,21 @@ class Auth:
         reset_token = _generate_uuid()
         self._db.update_user(user.id, reset_token=reset_token)
         return reset_token
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        '''Update users based on a given user id.
+        '''
+        user = self.find_user_by(id=user_id)
+        if user is None:
+            return
+        source_update = {}
+        for key, value in kwargs.items():
+            if hasattr(User, key):
+                source_update[getattr(User, key)] = value
+            else:
+                raise ValueError()
+        self._session.query(User).filter(User.id == user_id).update(
+            source_update,
+            synchronize_session=False,
+        )
+        self._session.commit()
